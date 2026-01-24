@@ -17,6 +17,10 @@ public class Vehicle {
         this.category_id = category_id;
     }
 
+    public int getCategoryId() {
+        return category_id;
+    }
+
     public int getId() { return car_id; }
 
     public String getBrand() { return brand; }
