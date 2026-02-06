@@ -22,11 +22,13 @@ public class DatabaseManager {
                 String model = rs.getString("model");
                 int price = rs.getInt("price");
                 int catId = rs.getInt("category_id");
+                boolean isAvailable = rs.getBoolean("available");
 
-                // Определяем текст категории по её ID (временно, пока нет JOIN)
                 String categoryName = (catId == 1) ? "Economy" : (catId == 2) ? "Sport" : "Premium";
 
-                vehicles.add(new Vehicle(id, brand, model, price, categoryName, catId));
+                Vehicle v = new Vehicle(id, brand, model, price, categoryName, catId);
+                v.setAvailable(isAvailable); // Устанавливаем актуальный статус
+                vehicles.add(v);
             }
         } catch (SQLException e) {
             e.printStackTrace();

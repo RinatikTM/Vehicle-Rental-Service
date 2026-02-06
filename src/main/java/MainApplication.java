@@ -14,17 +14,25 @@ public class MainApplication { // Класс обязателен
             ctx.json(vehicles);
         });
 
+        app.get("/", ctx -> ctx.result("Vehicle Rental API is running!"));
+
+        // В MainApplication.java замени обработчик /api/rent на этот:
         app.post("/api/rent", ctx -> {
-            String idParam = ctx.queryParam("id");
-            if (idParam == null) {
-                ctx.status(400).result("Missing ID parameter");
-                return;
-            }
-            int carId = Integer.parseInt(idParam);
+            // queryParamAsClass автоматически проверит, что ID — это число
+            int carId = ctx.queryParamAsClass("id", Integer.class)
+                    .check(id -> id > 0, "ID must be greater than 0")
+                    .get();
+
             db.updateAvailability(carId, false);
-            ctx.result("Vehicle with ID " + carId + " has been rented!");
+
+            ctx.json(new ResponseMessage("Vehicle " + carId + " rented successfully!"));
         });
 
         System.out.println("Server is running on http://localhost:8080");
     }
+}
+
+class ResponseMessage {
+    public String message;
+    public ResponseMessage(String m) { this.message = m; }
 }

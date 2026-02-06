@@ -17,9 +17,8 @@ public class Vehicle {
         this.category_id = category_id;
     }
 
-    // Геттеры необходимы для автоматического создания JSON
     public int getCar_id() { return car_id; }
-    public int getId() { return car_id; }
+    //public int getId() { return car_id; }
     public String getBrand() { return brand; }
     public String getModel() { return model; }
     public int getPrice() { return price; }
