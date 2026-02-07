@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rental Car System</title>
+    <meta charset="UTF-8">
+    <style>
+        .car-card { border: 1px solid #ccc; padding: 10px; margin: 10px; display: inline-block; border-radius: 8px; }
+        .available { color: green; }
+        .rented { color: red; }
+    </style>
+</head>
+<body>
+<h1>Доступные машины</h1>
+<div id="cars-list">Загрузка...</div>
+
+<script>
+    // Функция для загрузки списка машин из твоего API
+    async function loadCars() {
+        const response = await fetch('/api/vehicles');
+        const cars = await response.json();
+        const container = document.getElementById('cars-list');
+        container.innerHTML = '';
+
+        cars.forEach(car => {
+            const card = document.createElement('div');
+            card.className = 'car-card';
+            card.innerHTML = `
+                <h3>${car.brand} ${car.model}</h3>
+                <p>Цена: ${car.price}$</p>
+                <p class="${car.available ? 'available' : 'rented'}">
+                    ${car.available ? 'Свободна' : 'Арендована'}
+                </p>
+                <button onclick="rentCar(${car.id})" ${!car.available ? 'disabled' : ''}>
+                    Арендовать
+                </button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Функция для отправки запроса на аренду
+    async function rentCar(id) {
+        const response = await fetch(`/api/rent?id=${id}`, { method: 'POST' });
+        const result = await response.text();
+        alert(result);
+        loadCars(); // Обновляем список
+    }
+
+    loadCars(); // Запускаем при открытии страницы
+</script>
+</body>
+</html>

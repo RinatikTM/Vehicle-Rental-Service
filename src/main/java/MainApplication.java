@@ -1,8 +1,8 @@
 import io.javalin.Javalin;
 import java.util.List;
 
-public class MainApplication { // Класс обязателен
-    public static void main(String[] args) { // Метод main обязателен
+public class MainApplication {
+    public static void main(String[] args) {
         DatabaseManager db = new DatabaseManager();
 
         var app = Javalin.create(config -> {
@@ -16,9 +16,8 @@ public class MainApplication { // Класс обязателен
 
         app.get("/", ctx -> ctx.result("Vehicle Rental API is running!"));
 
-        // В MainApplication.java замени обработчик /api/rent на этот:
         app.post("/api/rent", ctx -> {
-            // queryParamAsClass автоматически проверит, что ID — это число
+
             int carId = ctx.queryParamAsClass("id", Integer.class)
                     .check(id -> id > 0, "ID must be greater than 0")
                     .get();
@@ -30,6 +29,7 @@ public class MainApplication { // Класс обязателен
 
         System.out.println("Server is running on http://localhost:8080");
     }
+
 }
 
 class ResponseMessage {
